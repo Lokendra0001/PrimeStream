@@ -16,7 +16,7 @@ const VideoPlayer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { item } = location.state || {};
-  const [channelIcon, setChannelIcon] = useState(" "); 
+  const [channelIcon, setChannelIcon] = useState(" ");
   const [viewCount, setViewCount] = useState("");
   const [publishAt, setPublishAt] = useState("");
   const [comments, setComments] = useState([]);
@@ -95,30 +95,30 @@ const VideoPlayer = () => {
 
         {/* Video Title */}
         <div className="mt-4">
-          <h1 className="text-lg font-semibold tracking-wide dark:text-white">
+          <h1 className="text-md tracking-wider sm:text-lg font-semibold sm:tracking-wide dark:text-white">
             {item.snippet.title}
           </h1>
 
           {/* Views and Date */}
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center space-x-3">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-xs sm:text-md text-gray-600 dark:text-gray-400">
                 {viewCount}
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-xs sm:text-md text-gray-600 dark:text-gray-400">
                 {publishAt}
               </span>
             </div>
 
             <div className="flex space-x-2">
-              <button className="px-2 py-1 cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10  rounded-full">
-                <span className="dark:text-white flex gap-1.5 items-center">
-                  <ThumbsUpIcon height={16} /> Like
+              <button className="sm:px-2 sm:py-1 cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10  rounded-full">
+                <span className="dark:text-white flex sm:gap-1.5 px-2 py-2 items-center text-xs sm:text-md">
+                  <ThumbsUpIcon className="h-3 sm:h-4" /> Like
                 </span>
               </button>
-              <button className="px-2 py-1 cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10 rounded-full">
-                <span className="dark:text-white flex gap-1.5 items-center">
-                  <Share height={16} /> Share
+              <button className="sm:px-2 sm:py-2   cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10 rounded-full">
+                <span className="dark:text-white flex sm:gap-1.5 px-2 py-2 items-center text-xs sm:text-md">
+                  <Share className="h-3 sm:h-4" /> Share
                 </span>
               </button>
             </div>
@@ -127,8 +127,8 @@ const VideoPlayer = () => {
 
         {/* Channel Info */}
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
+          <div className="flex items-center space-x-1.5 sm:space-x-3">
+            <div className="w-7 sm:w-10 sm:h-10 rounded-full overflow-hidden">
               <img
                 src={channelIcon}
                 alt={item.snippet.channelTitle}
@@ -136,7 +136,7 @@ const VideoPlayer = () => {
               />
             </div>
             <div>
-              <h3 className="font-medium dark:text-white">
+              <h3 className="font-medium text-[15px] sm:text-md dark:text-white">
                 {item.snippet.channelTitle}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -145,14 +145,14 @@ const VideoPlayer = () => {
               </p>
             </div>
           </div>
-          <button className="px-4 py-1.5 bg-red-600 text-white rounded-full tracking-wide cursor-pointer hover:bg-red-700">
+          <button className="sm:px-4 sm:py-1.5 text-sm px-2 py-1 bg-red-600 text-white rounded-full tracking-wide cursor-pointer hover:bg-red-700">
             Subscribe
           </button>
         </div>
 
         {/* Description */}
         <div className="mt-4 p-3 bg-gray-200 dark:bg-white/10 rounded-lg">
-          <p className="whitespace-pre-line  text-gray-800 dark:text-gray-200">
+          <p className="whitespace-pre-line text-sm sm:text-md  text-gray-800 dark:text-gray-200">
             {item.snippet.description}
           </p>
         </div>
@@ -168,16 +168,16 @@ const VideoPlayer = () => {
               <span className="text-gray-600 dark:text-gray-400 text-sm">
                 Sort by
               </span>
-              <select
-                className="bg-gray-200 dark:bg-white/10 dark:text-white px-3 py-1 rounded-md text-sm"
-                onChange={(e) => console.log("Sort by:", e.target.value)}
-              >
-                <option value="top">Top comments</option>
-                <option value="newest">Newest first</option>
+              <select className="bg-gray-200 dark:bg-white/10 dark:text-white px-3 py-1 rounded-md text-sm">
+                <option value="top" className="text-black">
+                  Top comments
+                </option>
+                <option value="newest" className="text-black">
+                  Newest first
+                </option>
               </select>
             </div>
           </div>
-          {console.log(comments)}
 
           {/* Comments List */}
           <div className="space-y-6">
