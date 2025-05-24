@@ -80,22 +80,24 @@ const Videolist = () => {
             .map((_, i) => (
               <div
                 key={i}
-                className="flex flex-col gap-2 w-full max-w-sm p-2 rounded-md shadow-sm dark:bg-white/10"
+                className="flex flex-col gap-2 w-full max-w-sm p-2 rounded-md bg-gray-200 shadow-sm dark:bg-transparent"
               >
                 <Skeleton
                   className="w-full h-[180px] rounded-lg"
-                  baseColor="rgba(255, 255, 255, 0.05)" // same as #FFFFFF26
-                  highlightColor="rgb(255, 255, 255)" // same as #FFFFFF0D
+                  baseColor="rgba(255, 255, 255, 0.05)"
+                  highlightColor="rgba(255, 255, 255, 0.15)"
                 />
                 <Skeleton
-                  className="w-3/4 h-5 rounded-md"
-                  baseColor="rgba(255, 255, 255, 0.05)" // same as #FFFFFF1A
-                  highlightColor="rgb(255, 255, 255)" // same as #FFFFFF0D
+                  width={250}
+                  className=" h-5 rounded-md"
+                  baseColor="rgba(255, 255, 255, 0.05)"
+                  highlightColor="rgba(255, 255, 255, 0.15)"
                 />
                 <Skeleton
+                  width={140}
                   className="w-1/2 h-4 rounded-md"
-                  baseColor="rgba(255, 255, 255, 0.05)" // same as #FFFFFF1A
-                  highlightColor="rgb(255, 255, 255)" // same as #FFFFFF0D
+                  baseColor="rgba(255, 255, 255, 0.05)"
+                  highlightColor="rgba(255, 255, 255, 0.15)"
                 />
               </div>
             ))
@@ -122,25 +124,8 @@ const Videolist = () => {
             {loading ? "Loading..." : "Load More"}
           </button>
         )}
-        {!nextPageToken && !loading && (
+        {!nextPageToken && !initialLoad && !loading && (
           <div className="flex flex-col items-center justify-center space-y-4 py-6">
-            <div className="relative w-40 h-40">
-              {/* Broken wire illustration */}
-              <div className="absolute top-1/2 left-0 w-full h-2 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-              <div className="absolute top-1/2 left-1/3 w-1/3 h-2 bg-gray-300 dark:bg-gray-600 rounded-full transform -translate-y-1/2 rotate-12 origin-left"></div>
-              <div className="absolute top-1/2 right-1/3 w-1/3 h-2 bg-gray-300 dark:bg-gray-600 rounded-full transform -translate-y-1/2 -rotate-12 origin-right"></div>
-
-              {/* Sparks */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="animate-ping absolute inline-flex h-5 w-5 rounded-full bg-blue-400 opacity-75"></div>
-                <div className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></div>
-              </div>
-
-              {/* Plug ends */}
-              <div className="absolute top-1/2 left-0 w-4 h-6 bg-gray-400 dark:bg-gray-500 rounded-l-full transform -translate-y-1/2"></div>
-              <div className="absolute top-1/2 right-0 w-4 h-6 bg-gray-400 dark:bg-gray-500 rounded-r-full transform -translate-y-1/2"></div>
-            </div>
-
             <div className="text-center space-y-2">
               <h3 className="text-lg font-bold  tracking-wider  text-red-500">
                 Connection Error!

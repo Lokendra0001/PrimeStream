@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addQuery } from "../store/QuerySlice";
+import { addQuery, toggleSidebar } from "../store/QuerySlice";
 import { setCurrentCategory, setSidebarOpen } from "../store/QuerySlice";
 import { NavLink } from "react-router-dom";
 
@@ -59,6 +59,7 @@ const Sidebar = ({}) => {
   const handleMainLink = (itemName) => {
     onSelectCategory(itemName);
     dispatch(addQuery(itemName));
+    if (window.innerWidth < 680) dispatch(toggleSidebar(false));
   };
 
   return (
@@ -95,7 +96,9 @@ const Sidebar = ({}) => {
                   ? " dark:bg-white/15 dark:hover:bg-white/25 dark:text-white text-black bg-black/10 "
                   : "bg-transparent hover:bg-black/5 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300"
               }`}
-              onClick={() => handleMainLink(item.link)}
+              onClick={() => {
+                handleMainLink(item.link);
+              }}
               title={!isSideOpen ? item.link : undefined}
             >
               <span
@@ -146,7 +149,10 @@ const Sidebar = ({}) => {
                     ? " dark:bg-white/15 dark:hover:bg-white/25 dark:text-white text-black bg-black/10 "
                     : "bg-transparent hover:bg-black/5 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300"
                 }`}
-                onClick={() => dispatch(setCurrentCategory(category.name))}
+                onClick={() => {
+                  dispatch(setCurrentCategory(category.name));
+                  if (window.innerWidth < 680) dispatch(toggleSidebar(false));
+                }}
                 title={!isSideOpen ? category.name : undefined}
               >
                 {category.icon && (

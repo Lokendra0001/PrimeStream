@@ -8,7 +8,7 @@ import {
   setCurrentCategory,
   setSidebarOpen,
 } from "../store/QuerySlice";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [val, setVal] = useState("");
@@ -49,7 +49,7 @@ const Header = () => {
           <img src={hamburger} width={24} alt="Menu" className="dark:invert" />
         </button>
 
-        <div className={`flex items-center gap-2 cursor-pointer`}>
+        <NavLink to={"/"} className={`flex items-center gap-2 cursor-pointer`}>
           <img
             src={primeStreamLogo}
             width={30}
@@ -59,7 +59,7 @@ const Header = () => {
           <h1 className="sm:text-[22px] text-[21px] font-[Roboto,'sans serif'] tracking-wider mt-0.5 font-semibold text-gray-800 dark:text-white">
             PrimeStream
           </h1>
-        </div>
+        </NavLink>
       </div>
 
       {/* Right Section - Search */}
