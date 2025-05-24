@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiKey = "AIzaSyC37da38if54vwEXGoVYAD0txj4ecP8Kog";
+const apiKey = "AIzaSyDjiGnkVTvrayZgFYh34XsyBdaI90t_KXg";
 const fetchApiData = async (query, pageToken = "") => {
   const baseURL = "https://www.googleapis.com/youtube/v3/search";
 
