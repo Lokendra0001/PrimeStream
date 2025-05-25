@@ -64,6 +64,19 @@ const Videolist = () => {
     fetchVideos(query, "");
   }, [query]);
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 680) {
+        dispatch(toggleSidebar(false));
+      } else {
+        dispatch(toggleSidebar(true));
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 w-full p-3 pt-4 mx-auto h-[90dvh] overflow-y-auto place-items-center dark:bg-black/[92%]">
       {initialLoad
