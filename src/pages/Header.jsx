@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import hamburger from "../assets/hamburger.svg";
 import primeStreamLogo from "../assets/primeStreamLogo.png";
 import { ArrowLeft, Search, X } from "lucide-react";
@@ -15,11 +15,13 @@ const Header = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const inputRef = useRef(null);
 
   const handleSearch = () => {
     setSearchBarOpen(true);
     if (val) {
       dispatch(addQuery(val));
+      if (inputRef) inputRef.current.blur();
       dispatch(setCurrentCategory(""));
       navigate(`/?q=${encodeURIComponent(val)}`);
     }
@@ -81,6 +83,7 @@ const Header = () => {
           type="text"
           className={`w-full bg-transparent outline-none pl-2 text-gray-900 dark:text-white dark:placeholder-gray-400
           ${searchBarOpen ? "block" : "hidden"} sm:block`}
+          ref={inputRef}
           placeholder="Search here..."
           value={val}
           onChange={(e) => setVal(e.target.value)}
