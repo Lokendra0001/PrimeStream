@@ -15,11 +15,14 @@ const Header = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const handleSearch = () => {
     setSearchBarOpen(true);
-    dispatch(addQuery(val));
-    dispatch(setCurrentCategory(""));
-    navigate(`/?q=${encodeURIComponent(val)}`);
+    if (val) {
+      dispatch(addQuery(val));
+      dispatch(setCurrentCategory(""));
+      navigate(`/?q=${encodeURIComponent(val)}`);
+    }
   };
 
   return (
@@ -31,7 +34,12 @@ const Header = () => {
           className={`${
             searchBarOpen ? "pr-1 py-2" : ""
           } sm:px-3 sm:py-2 text-gray-600 dark:text-gray-300 cursor-pointer text-center block sm:hidden`}
-          onClick={() => setSearchBarOpen(false)}
+          onClick={() => {
+            setSearchBarOpen(false);
+            navigate("/");
+            setVal("");
+            dispatch(addQuery("home"));
+          }}
         >
           <ArrowLeft size={20} />
         </button>

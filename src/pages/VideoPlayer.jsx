@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../store/QuerySlice";
-import { data, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import {
   fetchApiVideos,
@@ -83,18 +83,20 @@ const VideoPlayer = () => {
   return (
     <div className="flex flex-col lg:flex-row w-full bg-gray-100 dark:bg-black/90 h-[90vh] overflow-y-auto ">
       {/* Video Area */}
-      <div className="w-full lg:w-3/4 p-4">
-        <div className="aspect-video bg-black rounded-xl overflow-hidden">
-          <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${item.id.videoId}`}
-            controls
+      <div className="w-full lg:w-3/4  sm:p-4">
+        <div className=" aspect-video bg-black sm:rounded-xl overflow-hidden">
+          <iframe
             width="100%"
             height="100%"
-          />
+            src={`https://www.youtube.com/embed/${item.id.videoId}?rel=0`}
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
 
         {/* Video Title */}
-        <div className="mt-4">
+        <div className="mt-4  p-2">
           <h1 className="text-md tracking-wider sm:text-lg font-semibold sm:tracking-wide dark:text-white">
             {item.snippet.title}
           </h1>
@@ -126,7 +128,7 @@ const VideoPlayer = () => {
         </div>
 
         {/* Channel Info */}
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 p-2">
           <div className="flex items-center space-x-1.5 sm:space-x-3">
             <div className="w-7 sm:w-10 sm:h-10 rounded-full overflow-hidden">
               <img
@@ -151,14 +153,14 @@ const VideoPlayer = () => {
         </div>
 
         {/* Description */}
-        <div className="mt-4 p-3 bg-gray-200 dark:bg-white/10 rounded-lg">
+        <div className="mt-4 mx-2 sm:mx-0 bg-gray-200 dark:bg-white/10 rounded-lg p-2">
           <p className="whitespace-pre-line text-sm sm:text-md  text-gray-800 dark:text-gray-200">
             {item.snippet.description}
           </p>
         </div>
 
         {/* Comments Section */}
-        <div className="mt-8">
+        <div className="mt-8 p-2">
           {/* Comments Header */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold dark:text-white">
