@@ -3,13 +3,14 @@
 
 
 body {
-    font-family: 'Ancizar Sans', sans-serif;
+  font-family: 'Ancizar Sans', sans-serif;
 }
 
 /* Add this CSS somewhere global (e.g. in your index.css or a CSS module) */
-.scrollbar-auto-hide, body {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(144, 144, 144) transparent;
+.scrollbar-auto-hide,
+body {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(144, 144, 144) transparent;
 }
 
 @media (max-width: 522px) {
@@ -17,4 +18,3 @@ body {
     grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
   }
 }
-

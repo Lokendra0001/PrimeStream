@@ -84,7 +84,7 @@ const RelatedVideo = ({ currentVideoId }) => {
     );
   }
 
-  return (
+  return relatedVideos.length > 0 ? (
     <div className="space-y-3">
       {relatedVideos.map((video) => (
         <NavLink
@@ -115,6 +115,32 @@ const RelatedVideo = ({ currentVideoId }) => {
           </div>
         </NavLink>
       ))}
+    </div>
+  ) : (
+    <div class="relative flex w-full justify-center ">
+      <div class="relative w-full max-w-md rounded-2xl  p-10 text-center ">
+        <div class="mx-auto mb-6 h-20 w-20 animate-pulse">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            class="text-black/80 dark:text-white"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 01-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 00-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909"
+            />
+          </svg>
+        </div>
+
+        <h2 class="mb-3 text-xl tracking-wide dark:font-semibold dark:text-white">Related Video Not Found</h2>
+        <p class="mb-6 text-gray-500 dark:text-gray-400">
+          This content might be off the grid. Try another link or check back
+          later.
+        </p>
+      </div>
     </div>
   );
 };

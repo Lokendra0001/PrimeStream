@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiKey = "AIzaSyCXJGG3EU1U2oxqIpCFtvNUyv9JeqKdy3k";
+const apiKey = "AIzaSyBHLjWuKA3CX8M1juzcHNJIczsHP7fKj_M";
 const fetchApiData = async (query, pageToken = "") => {
   const baseURL = "https://www.googleapis.com/youtube/v3/search";
 
@@ -51,20 +51,21 @@ export const fetchApiVideos = async (videoId) => {
 export const fetchChannelDetails = async (channelId) => {
   const baseURL = "https://www.googleapis.com/youtube/v3/channels";
   const params = {
-    part: "snippet",
+    part: "snippet, brandingSettings",
     key: apiKey,
     id: channelId,
   };
   const response = await axios.get(baseURL, { params });
-  if (response) return response.data.items[0].snippet.thumbnails.default.url;
+  if (response) return response.data.items[0];
 };
 
 export const fetchComments = async (videoId) => {
+  const screenSize = window.innerWidth < 680;
   const url = "https://www.googleapis.com/youtube/v3/commentThreads";
   const params = {
     part: "snippet",
     videoId,
-    maxResults: 18,
+    maxResults: screenSize ? 5 : 18,
     key: apiKey,
   };
 
@@ -74,6 +75,44 @@ export const fetchComments = async (videoId) => {
   } catch (error) {
     console.error("Error fetching comments:", error);
     return [];
+  }
+};
+
+export const fetchChannelVideos = async (channelId) => {
+  const baseURL = "https://www.googleapis.com/youtube/v3/search";
+  const params = {
+    part: "snippet",
+    channelId: channelId,
+    type: "video",
+    maxResults: 30,
+    order: "date",
+    videoEmbeddable: "true",
+    key: apiKey,
+  };
+
+  try {
+    const response = await axios.get(baseURL, { params });
+    if (response) return response.data.items; // return full response data
+  } catch (error) {
+    console.error("Error fetching YouTube data:", error);
+    return null;
+  }
+};
+
+export const fetchStats = async (channelId) => {
+  const baseURL = "https://www.googleapis.com/youtube/v3/channels";
+  const params = {
+    part: "statistics",
+    key: apiKey,
+    id: channelId,
+  };
+
+  try {
+    const response = await axios.get(baseURL, { params });
+    if (response) return response.data.items; // return full response data
+  } catch (error) {
+    console.error("Error fetching YouTube data:", error);
+    return null;
   }
 };
 

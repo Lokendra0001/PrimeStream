@@ -54,8 +54,8 @@ const PrimeStreamCard = ({ item }) => {
   useEffect(() => {
     const fetchVideo = async () => {
       const data = await fetchApiVideos(item.id.videoId);
-      const val = parseYouTubeDuration(data[0].contentDetails.duration)
-      setDuration(val)
+      const val = parseYouTubeDuration(data[0].contentDetails.duration);
+      setDuration(val);
     };
     fetchVideo();
   }, [item]);

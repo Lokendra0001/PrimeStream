@@ -64,7 +64,7 @@ const VideoPlayer = () => {
     const fetchChannelUrl = async () => {
       const data = await fetchChannelDetails(item.snippet.channelId);
       if (data) {
-        setChannelIcon(data);
+        setChannelIcon(data.snippet.thumbnails.default.url);
       }
     };
 
@@ -84,20 +84,18 @@ const VideoPlayer = () => {
     <div className="flex flex-col lg:flex-row w-full bg-gray-100 dark:bg-black/90 h-[90vh] overflow-y-auto ">
       {/* Video Area */}
       <div className="w-full lg:w-3/4  sm:p-4">
-        <div className=" aspect-video bg-black sm:rounded-xl overflow-hidden">
-          <iframe
+        <div className="h-50 sm:h-auto sm:aspect-video bg-black sm:rounded-xl overflow-hidden">
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${item.id.videoId}`}
+            controls
             width="100%"
             height="100%"
-            src={`https://www.youtube.com/embed/${item.id.videoId}?rel=0`}
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          />
         </div>
 
         {/* Video Title */}
-        <div className="mt-4  p-2">
-          <h1 className="text-md tracking-wider sm:text-lg font-semibold sm:tracking-wide dark:text-white">
+        <div className="mt-4  p-2 sm:p-0">
+          <h1 className="text-md tracking-wider sm:text-lg font-semibold sm:tracking-wide  dark:text-white">
             {item.snippet.title}
           </h1>
 
@@ -113,13 +111,13 @@ const VideoPlayer = () => {
             </div>
 
             <div className="flex space-x-2">
-              <button className="sm:px-2 sm:py-1 cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10  rounded-full">
-                <span className="dark:text-white flex sm:gap-1.5 px-2 py-2 items-center text-xs sm:text-md">
+              <button className="sm:px-2 sm:py-0 cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10  rounded-full">
+                <span className="dark:text-white flex sm:gap-1.5 px-2 py-1.5 sm:py-0 items-center text-xs sm:text-md">
                   <ThumbsUpIcon className="h-3 sm:h-4" /> Like
                 </span>
               </button>
               <button className="sm:px-2 sm:py-2   cursor-pointer hover:scale-[1.01] bg-gray-200 dark:bg-white/10 rounded-full">
-                <span className="dark:text-white flex sm:gap-1.5 px-2 py-2 items-center text-xs sm:text-md">
+                <span className="dark:text-white flex sm:gap-1.5 px-2 py-1.5 sm:py-0 items-center text-xs sm:text-md">
                   <Share className="h-3 sm:h-4" /> Share
                 </span>
               </button>
@@ -128,7 +126,7 @@ const VideoPlayer = () => {
         </div>
 
         {/* Channel Info */}
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 p-2">
+        <div className="flex items-center justify-between mt-2 sm:mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 p-2">
           <div className="flex items-center space-x-1.5 sm:space-x-3">
             <div className="w-7 sm:w-10 sm:h-10 rounded-full overflow-hidden">
               <img
@@ -138,7 +136,14 @@ const VideoPlayer = () => {
               />
             </div>
             <div>
-              <h3 className="font-medium text-[15px] sm:text-md dark:text-white">
+              <h3
+                className="font-medium text-[15px] sm:text-md dark:text-white cursor-pointer"
+                onClick={() =>
+                  navigate("/channel", {
+                    state: { channelId: item.snippet.channelId },
+                  })
+                }
+              >
                 {item.snippet.channelTitle}
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
