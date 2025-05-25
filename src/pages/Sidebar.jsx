@@ -74,7 +74,7 @@ const Sidebar = ({}) => {
       )}
 
       <div
-        className={`fixed top-[10vh] h-[90dvh] bg-white dark:bg-[#0f0f0f]  flex flex-col  
+        className={`fixed top-[10dvh] h-[90dvh] bg-white dark:bg-[#0f0f0f]  flex flex-col  
         overflow-y-hidden hover:overflow-y-auto overflow-x-hidden scrollbar-auto-hide shadow-2xl z-50
         ${isSideOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"} 
         ${isSideOpen ? "w-52 p-3 pl-1 md:pl-3" : "w-14 p-2.5"} 

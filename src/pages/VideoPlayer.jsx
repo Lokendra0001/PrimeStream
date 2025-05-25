@@ -81,7 +81,7 @@ const VideoPlayer = () => {
   }, [item]);
 
   return (
-    <div className="flex flex-col lg:flex-row w-full bg-gray-100 dark:bg-black/90 h-[90dvh] overflow-y-auto ">
+    <div className="flex flex-col lg:flex-row w-full overflow-x-hidden bg-gray-100 dark:bg-black/90 h-[90dvh] overflow-y-auto ">
       {/* Video Area */}
       <div className="w-full lg:w-3/4  sm:p-4">
         <div className="h-48 sm:h-auto sm:aspect-video bg-black sm:rounded-xl overflow-hidden">
@@ -188,15 +188,18 @@ const VideoPlayer = () => {
           </div>
 
           {/* Comments List */}
-          <div className="space-y-6">
+          <div className="space-y-6 w-full">
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <div key={comment.id} className="flex space-x-3">
+                <div
+                  key={comment.id}
+                  className="flex space-x-3 "
+                >
                   <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 flex justify-center items-center">
                     <User className="dark:text-white bg-gray-300 dark:bg-white/10 p-2 h-[80%] w-[80%] rounded-full " />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex-1 w-full ">
+                    <div className="flex items-center space-x-2 flex-wrap">
                       <h3 className="font-medium text-sm dark:text-white">
                         {
                           comment.snippet.topLevelComment.snippet
@@ -209,7 +212,7 @@ const VideoPlayer = () => {
                         ).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="mt-1 text-sm dark:text-gray-300">
+                    <p className="mt-1 text-sm dark:text-gray-300  line-clamp-[5]">
                       {comment.snippet.topLevelComment.snippet.textDisplay}
                     </p>
                     <div className="flex items-center mt-2 space-x-4">
