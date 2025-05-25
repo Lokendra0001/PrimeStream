@@ -13,13 +13,15 @@ function App() {
     function handleResize() {
       if (window.innerWidth < 680) {
         dispatch(toggleSidebar(false));
+      } else {
+        dispatch(toggleSidebar(true));
       }
     }
-
-    handleResize(); // check on mount
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   return (
     <>
       <Container>

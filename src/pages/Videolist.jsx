@@ -17,6 +17,7 @@ const Videolist = () => {
   const [skeletonCount, setSkeletonCount] = useState(10);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const searchParam = new URLSearchParams(location.search).get("q");
@@ -27,21 +28,26 @@ const Videolist = () => {
   }, [location.search]);
 
   const fetchVideos = async (query, pageToken = "") => {
+    setError(false);
     setLoading(true);
-    const res = await fetchApiData(query, pageToken);
-    if (res) {
-      if (!pageToken) {
-        setData(res.items);
-      } else {
-        setData((prev) => [...prev, ...res.items]);
+    try {
+      const res = await fetchApiData(query, pageToken);
+      if (res) {
+        if (!pageToken) {
+          setData(res.items);
+        } else {
+          setData((prev) => [...prev, ...res.items]);
+        }
+        setNextPageToken(res.nextPageToken);
+        setSkeletonCount(res.items.length);
       }
-      setNextPageToken(res.nextPageToken);
-      setSkeletonCount(res.items.length);
+    } catch (error) {
+      setError(true);
     }
     setTimeout(() => {
       setLoading(false);
       setInitialLoad(false);
-    }, 500);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -58,22 +64,8 @@ const Videolist = () => {
     fetchVideos(query, "");
   }, [query]);
 
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 680) {
-        dispatch(toggleSidebar(false));
-      } else {
-        dispatch(toggleSidebar(true));
-      }
-    }
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 w-full p-3 pt-4 mx-auto h-[90vh] overflow-y-auto place-items-center dark:bg-black/[92%]">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 w-full p-3 pt-4 mx-auto h-[90dvh] overflow-y-auto place-items-center dark:bg-black/[92%]">
       {initialLoad
         ? Array(skeletonCount)
             .fill(0)
@@ -115,7 +107,7 @@ const Videolist = () => {
       <div className="flex justify-center my-4 col-span-full">
         {nextPageToken && (
           <button
-            className="px-4 py-2 bg-black/90 dark:bg-red-500 text-white rounded cursor-pointer hover:bg-black dark:hover:bg-red-600 disabled:opacity-50 transition-colors"
+            className="px-4 py-2 bg-black/90 dark:bg-red-600 text-white rounded cursor-pointer hover:bg-black dark:hover:bg-red-700 disabled:opacity-50 transition-colors"
             onClick={() =>
               fetchVideos(query ? query : selectedCategory, nextPageToken)
             }
@@ -124,7 +116,7 @@ const Videolist = () => {
             {loading ? "Loading..." : "Load More"}
           </button>
         )}
-        {!nextPageToken && !initialLoad && !loading && (
+        {error && !loading && (
           <div className="flex flex-col items-center justify-center space-y-4 py-6">
             <div className="text-center space-y-2">
               <h3 className="text-lg font-bold  tracking-wider  text-red-500">

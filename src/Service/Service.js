@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiKey = "AIzaSyBHLjWuKA3CX8M1juzcHNJIczsHP7fKj_M";
+const apiKey = "AIzaSyC37da38if54vwEXGoVYAD0txj4ecP8Kog";
 const fetchApiData = async (query, pageToken = "") => {
   const baseURL = "https://www.googleapis.com/youtube/v3/search";
 
@@ -9,7 +9,6 @@ const fetchApiData = async (query, pageToken = "") => {
     q: query ? query : "home",
     maxResults: 20,
     videoDuration: "long",
-    regionCode: "IN",
     order: "relevance",
     videoEmbeddable: "true",
     key: apiKey,
@@ -26,8 +25,7 @@ const fetchApiData = async (query, pageToken = "") => {
         return response.data;
       }
     } catch (error) {
-      console.error("Error fetching YouTube data:", error);
-      return null;
+      throw error;
     }
 };
 
@@ -78,24 +76,27 @@ export const fetchComments = async (videoId) => {
   }
 };
 
-export const fetchChannelVideos = async (channelId) => {
+export const fetchChannelVideos = async (channelId, nextPagetoken = "") => {
   const baseURL = "https://www.googleapis.com/youtube/v3/search";
   const params = {
     part: "snippet",
     channelId: channelId,
     type: "video",
-    maxResults: 30,
+    maxResults: 20,
     order: "date",
     videoEmbeddable: "true",
     key: apiKey,
   };
 
+  if (nextPagetoken) {
+    params.pageToken = nextPagetoken;
+  }
+
   try {
     const response = await axios.get(baseURL, { params });
-    if (response) return response.data.items; // return full response data
+    if (response) return response.data; // return full response data
   } catch (error) {
-    console.error("Error fetching YouTube data:", error);
-    return null;
+    throw error;
   }
 };
 

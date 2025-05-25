@@ -15,7 +15,7 @@ const Header = () => {
   const [searchBarOpen, setSearchBarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const handleSearch = () => {
     setSearchBarOpen(true);
     if (val) {
@@ -26,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center h-[10vh] w-full px-2 sm:px-3 shadow-sm bg-white dark:bg-[#0f0f0ffd]  dark:border-gray-700">
+    <nav className="flex justify-between items-center h-[10dvh] w-full px-2 sm:px-3 shadow-sm bg-white dark:bg-[#0f0f0ffd]  dark:border-gray-700">
       {/* Left Section - Logo and Menu */}
       {searchBarOpen && (
         <button

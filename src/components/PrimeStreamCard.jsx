@@ -1,10 +1,11 @@
 import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fetchApiVideos } from "../Service/Service";
+import { useNavigate } from "react-router-dom";
 
 const PrimeStreamCard = ({ item }) => {
   const [duration, setDuration] = useState(0);
-
+  const navigate = useNavigate();
   const getTimeAgo = (publishedAt) => {
     const pubDate = new Date(publishedAt);
     const now = new Date();
@@ -61,7 +62,7 @@ const PrimeStreamCard = ({ item }) => {
   }, [item]);
 
   return (
-    <div className="h-[300px] w-full sm:w-full lg:w-full bg-white dark:bg-transparent rounded-lg overflow-hidden cursor-pointer  duration-200 ">
+    <div className="h-[300px] w-full sm:w-full lg:w-full bg-white dark:bg-transparent rounded-lg overflow-hidden cursor-pointer  duration-200 z-30">
       {/* Thumbnail with duration badge */}
       <div className="relative">
         <img
@@ -79,13 +80,20 @@ const PrimeStreamCard = ({ item }) => {
       <div className="flex p-3 gap-3">
         {/* Channel icon */}
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+          <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden z-50">
             {item.snippet.thumbnails.default.url ? (
               <img
                 src={item.snippet.thumbnails.default.url}
                 alt="channel"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover "
                 loading="lazy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate("/channel", {
+                    state: { channelId: item.snippet.channelId, item: item },
+                  });
+                }}
               />
             ) : (
               <User className="w-6 h-6 text-gray-500 dark:text-gray-400" />

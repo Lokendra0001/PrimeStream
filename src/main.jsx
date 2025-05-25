@@ -5,8 +5,7 @@ import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Account, Videolist, VideoPlayer } from "./pages/Index.jsx";
-import Channel from "./pages/Channel.jsx";
+import { Videolist, VideoPlayer, Channel } from "./pages/Index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +13,6 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <Videolist /> },
-      { path: "/account", element: <Account /> },
       { path: "/video/:id", element: <VideoPlayer /> },
       { path: "/channel", element: <Channel /> },
     ],

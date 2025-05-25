@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
-  fetchApiVideos,
   fetchChannelDetails,
   fetchChannelVideos,
   fetchStats,
@@ -9,13 +8,16 @@ import {
 import { NavLink } from "react-router-dom";
 import PrimeStreamCard from "../components/PrimeStreamCard";
 import Skeleton from "react-loading-skeleton";
-import { FiYoutube } from "react-icons/fi";
-import { BsGrid3X3Gap, BsCollectionPlay } from "react-icons/bs";
-import { RiLiveLine } from "react-icons/ri";
+import { BsCollectionPlay } from "react-icons/bs";
+import { toggleSidebar } from "../store/QuerySlice";
+import { useDispatch } from "react-redux";
+import { Verified } from "lucide-react";
 
 function Channel() {
   const location = useLocation();
   const [initialLoad, setInitialLoad] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [skeletonCount, setSkeletonCount] = useState(8);
   const [data, setData] = useState([]);
   const [activeTab, setActiveTab] = useState("videos");
@@ -28,24 +30,30 @@ function Channel() {
     description:
       "This channel creates awesome content about technology, design, and more!",
   });
+  const [nextPageToken, setnextPageToken] = useState(null);
+  const dispatch = useDispatch();
 
-  const fetchVideos = async (chId) => {
-    setInitialLoad(true);
-    const res = await fetchChannelVideos(chId);
-    if (res) {
-      setData(res);
-      console.log(res);
-      setChannelInfo((prev) => ({
-        ...prev,
-        name: res[0].snippet.channelTitle,
-      }));
-
-      setSkeletonCount(res.length);
-      setTimeout(() => {
-        setInitialLoad(false);
-      }, 1000);
+  const fetchVideos = async (chId, token = "") => {
+    setLoading(true);
+    setInitialLoad(token == "");
+    try {
+      const res = await fetchChannelVideos(chId, token);
+      if (res) {
+        if (!token) {
+          setData(res.items);
+        } else {
+          setData((prev) => [...prev, ...res.items]);
+        }
+        setnextPageToken(res.nextPageToken);
+        setSkeletonCount(res.items.length);
+        setChannelInfo((prev) => ({
+          ...prev,
+          name: res.items[0].snippet.channelTitle,
+        }));
+      }
+    } catch (error) {
+      setError(true);
     }
-
     const detail = await fetchStats(location.state?.channelId);
     if (detail) {
       setChannelInfo((prev) => ({
@@ -57,7 +65,6 @@ function Channel() {
 
     const data = await fetchChannelDetails(location.state?.channelId);
     if (data) {
-      console.log(data);
       setChannelInfo((prev) => ({
         ...prev,
         avatar: data.snippet.thumbnails.default.url,
@@ -65,16 +72,33 @@ function Channel() {
         banner: data.brandingSettings.image.bannerExternalUrl,
       }));
     }
+    setTimeout(() => {
+      setInitialLoad(false);
+      setLoading(false);
+    }, 500);
   };
 
   useEffect(() => {
     if (location.state) {
-      fetchVideos(location.state?.channelId);
+      fetchVideos(location.state?.channelId, "");
     }
   }, [location.state]);
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 680) {
+        dispatch(toggleSidebar(false));
+      } else {
+        dispatch(toggleSidebar(true));
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="w-full h-[90vh] overflow-y-auto bg-gray-50 dark:bg-black/[92%]">
+    <div className="w-full h-[90dvh] overflow-y-auto bg-gray-50 dark:bg-black/[92%]">
       {/* Channel Banner */}
       <div className="relative w-full h-48 sm:h-60 bg-gradient-to-r overflow-hidden">
         <img
@@ -85,7 +109,7 @@ function Channel() {
             e.target.style.display = "none";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
       </div>
 
       {/* Channel Header */}
@@ -101,15 +125,15 @@ function Channel() {
 
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 sm:text-white dark:text-white">
                 {channelInfo.name}
               </h1>
-              <span className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 rounded-full">
-                <FiYoutube className="inline mr-1" /> Verified
+              <span className=" text-xs   rounded-full">
+                <Verified className="inline h-4 text-white" />
               </span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 sm:text-gray-400 dark:text-gray-300">
               <span>@{channelInfo.name}</span>
               <span>{channelInfo.subscribers} subscribers</span>
               <span>{channelInfo.videos} videos</span>
@@ -151,23 +175,25 @@ function Channel() {
               .map((_, i) => (
                 <div
                   key={i}
-                  className="flex flex-col gap-3 w-full rounded-lg overflow-hidden bg-white dark:bg-black/[92%]shadow-sm hover:shadow-md transition-shadow"
+                  className="flex flex-col gap-2 w-full max-w-sm p-2 rounded-md bg-gray-200 shadow-sm dark:bg-transparent"
                 >
                   <Skeleton
-                    className="w-full aspect-video rounded-t-lg"
-                    baseColor="#f3f4f6"
-                    highlightColor="#e5e7eb"
-                    darkBaseColor="rgba(31, 41, 55, 0.5)"
-                    darkHighlightColor="rgba(31, 41, 55, 0.8)"
+                    className="w-full h-[180px] rounded-lg"
+                    baseColor="rgba(255, 255, 255, 0.05)"
+                    highlightColor="rgba(255, 255, 255, 0.15)"
                   />
-                  <div className="p-3">
-                    <Skeleton
-                      width="80%"
-                      height={20}
-                      className="rounded-md mb-2"
-                    />
-                    <Skeleton width="60%" height={16} className="rounded-md" />
-                  </div>
+                  <Skeleton
+                    width={250}
+                    className=" h-5 rounded-md"
+                    baseColor="rgba(255, 255, 255, 0.05)"
+                    highlightColor="rgba(255, 255, 255, 0.15)"
+                  />
+                  <Skeleton
+                    width={140}
+                    className="w-1/2 h-4 rounded-md"
+                    baseColor="rgba(255, 255, 255, 0.05)"
+                    highlightColor="rgba(255, 255, 255, 0.15)"
+                  />
                 </div>
               ))
           ) : data.length > 0 ? (
@@ -210,6 +236,51 @@ function Channel() {
           )}
         </div>
       </div>
+
+      {nextPageToken && (
+        <div className="w-full flex justify-center pb-5">
+          <button
+            className="px-4 py-2 bg-black/90 dark:bg-red-600 text-white rounded cursor-pointer hover:bg-black dark:hover:bg-red-700 disabled:opacity-50 transition-colors"
+            onClick={() =>
+              fetchVideos(location.state?.channelId, nextPageToken)
+            }
+            disabled={loading}
+          >
+            {loading ? "loading..." : "Load More"}
+          </button>
+        </div>
+      )}
+      {error && (
+        <div className="flex flex-col items-center justify-center space-y-4 py-6">
+          <div className="text-center space-y-2">
+            <h3 className="text-lg font-bold  tracking-wider  text-red-500">
+              Connection Error!
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 max-w-md px-4">
+              Server capacity is temporarily maxed out. Please try again in a
+              little while.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-md transition-colors flex items-center mx-auto"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Retry Connection
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
