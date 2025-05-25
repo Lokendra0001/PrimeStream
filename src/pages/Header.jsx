@@ -90,6 +90,7 @@ const Header = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearch();
+              inputRef.current.blur();
             }
           }}
         />
