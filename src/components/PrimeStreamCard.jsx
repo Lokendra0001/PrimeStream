@@ -37,17 +37,19 @@ const PrimeStreamCard = ({ item }) => {
   };
 
   function parseYouTubeDuration(duration) {
-    const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+    if (duration) {
+      const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
 
-    const hours = (match[1] || "0H").slice(0, -1);
-    const minutes = (match[2] || "0M").slice(0, -1);
-    const seconds = (match[3] || "0S").slice(0, -1);
+      const hours = (match[1] || "0H").slice(0, -1);
+      const minutes = (match[2] || "0M").slice(0, -1);
+      const seconds = (match[3] || "0S").slice(0, -1);
 
-    const h = String(hours).padStart(2, "0");
-    const m = String(minutes).padStart(2, "0");
-    const s = String(seconds).padStart(2, "0");
+      const h = String(hours).padStart(2, "0");
+      const m = String(minutes).padStart(2, "0");
+      const s = String(seconds).padStart(2, "0");
 
-    return h === "00" ? `${m}:${s}` : `${h}:${m}:${s}`;
+      return h === "00" ? `${m}:${s}` : `${h}:${m}:${s}`;
+    }
   }
 
   // setDuration(parsedVal);

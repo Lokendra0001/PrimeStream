@@ -84,12 +84,13 @@ const VideoPlayer = () => {
     <div className="flex flex-col lg:flex-row w-full bg-gray-100 dark:bg-black/90 h-[90dvh] overflow-y-auto ">
       {/* Video Area */}
       <div className="w-full lg:w-3/4  sm:p-4">
-        <div className="h-50 sm:h-auto sm:aspect-video bg-black sm:rounded-xl overflow-hidden">
+        <div className="h-48 sm:h-auto sm:aspect-video bg-black sm:rounded-xl overflow-hidden">
           <ReactPlayer
             url={`https://www.youtube.com/watch?v=${item.id.videoId}`}
             controls
             width="100%"
             height="100%"
+            playing={true}
           />
         </div>
 
