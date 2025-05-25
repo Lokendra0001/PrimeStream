@@ -68,7 +68,7 @@ const Sidebar = ({}) => {
       {isSideOpen && isMobile && (
         <div
           onClick={() => onClose(!isSideOpen)}
-          className="fixed left-0 right-0 bottom-0 top-[10vh] bg-black/50 dark:bg-black/70 z-40"
+          className="fixed left-0 right-0 bottom-0 top-[10dvh] bg-black/50 dark:bg-black/70 z-40"
           aria-hidden="true"
         />
       )}
@@ -123,12 +123,12 @@ const Sidebar = ({}) => {
 
         {/* Categories */}
         <div
-          className={`border-t border-gray-200 dark:border-gray-700 pt-4 flex flex-col w-full ${
+          className={`border-t border-gray-200 dark:border-gray-700 pt-3 flex flex-col w-full ${
             !isSideOpen && "items-center"
           }`}
         >
           <h3
-            className={`px-2 font-semibold text-gray-500 dark:text-gray-400 mb-2 tracking-wide ${
+            className={`px-2 font-semibold text-gray-500 dark:text-gray-400 mb-1 tracking-wide ${
               isSideOpen ? "text-sm" : "text-xs"
             }`}
           >
@@ -180,7 +180,7 @@ const Sidebar = ({}) => {
 
         {/* Footer */}
         {isSideOpen && (
-          <div className="mt-auto pt-4 flex flex-col items-center md:items-start border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400 space-y-1 w-full">
+          <div className="mt-auto pt-1 flex flex-col items-center md:items-start border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400 space-y-1 w-full">
             <p>© 2025 PrimeStream</p>
             <p>Terms · Privacy · Policy</p>
           </div>
