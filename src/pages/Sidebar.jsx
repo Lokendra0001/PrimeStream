@@ -143,7 +143,7 @@ const Sidebar = ({}) => {
               <NavLink
                 to={""}
                 key={index}
-                className={`flex items-center p-2 rounded-lg gap-3 cursor-pointer
+                className={`flex items-center p-3 sm:p-2 rounded-lg gap-3 cursor-pointer
                 ${
                   selectedCategory === category.name
                     ? " dark:bg-white/15 dark:hover:bg-white/25 dark:text-white text-black bg-black/10 "
