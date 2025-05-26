@@ -133,7 +133,7 @@ const Videolist = () => {
           <div className="flex flex-col items-center justify-center space-y-4 py-6">
             <div className="text-center space-y-2">
               <h3 className="text-lg font-bold  tracking-wider  text-red-500">
-                Connection Error!
+                Error : Too Many Request.Try again later!
               </h3>
               <p className="text-gray-600 dark:text-gray-400 max-w-md px-4">
                 Server capacity is temporarily maxed out. Please try again in a
